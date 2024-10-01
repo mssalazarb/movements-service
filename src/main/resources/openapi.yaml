@@ -1,0 +1,224 @@
+openapi: 3.0.3
+info:
+  title: Swagger Movement Service - OpenAPI 3.0
+  description: |-
+    <div style="text-align: justify;">
+      <h3>Maestría en Software - Diseño de patrones de API</h3>
+    
+      <img src="https://blogposgrados.ups.edu.ec/hs-fs/hubfs/Logo-Posgrados.png?width=1517&height=262&name=Logo-Posgrados.png" alt="Image" align="right" width="400"/>
+    
+      <p>This is a contract to manage the movements of clients' bank accounts based on the OpenAPI 3.0 specification. This is a contract that uses the API First-Contract principle to standardize the creation of endpoints to be used in our service and improve the development of our APIs.</p> 
+    </div>
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: msalazarb5@est.ups.edu.ec
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0-SNAPSHOT
+externalDocs:
+  description: Kanban del Proyecto
+  url: https://github.com/users/mssalazarb/projects/6
+servers:
+  - url: http://grupo1.docker.localhost/api/v1
+    description: API Gateway
+  - url: http://movement-service.docker.localhost/api
+    description: Movement Service
+tags:
+  - name: Movements
+    description: All about movements
+paths:
+  /movements:
+    post:
+      tags:
+        - Movements
+      summary: Create a new deposit or withdrawal
+      description: Create a new deposit or withdrawal
+      operationId: createMovement
+      parameters:
+        - name: x-sw-client-request-id
+          in: header
+          description: Unique ID for the request
+          required: true
+          schema:
+            type: string
+        - name: x-sw-client-user-agent
+          in: header
+          description: Type of device that consume Endpoint
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Structure of the object to create movement
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movement'
+            example:
+              typeMovement: DEPOSIT
+              ammount: 1.40
+              accountId: 4565463
+      responses:
+        '201':
+          description: The movement was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountMovement'
+              example:
+                id: 1
+                typeMovement: DEPOSIT
+                ammount: 1.40
+        '400':
+          description: There is an error with the parameters sent to create the movement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                title: 'Error creating movement'
+                detail: 'Some fields are incorrect'
+                errors:
+                  - message: 'The type of movement is incorrect'
+                  - message: 'The amount entered must be greater than 0'
+                status: 400
+        '409':
+          description: The movement cannot be created due to a communication error with the accounts service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                title: 'Error creating movement'
+                detail: 'Error consuming account service'
+                errors:
+                  - message: 'The account service is unavailable'
+                status: 409
+    get:
+      tags:
+        - Movements
+      summary: Find all movements associated with an account ID
+      description: Find all movements associated with an account ID
+      operationId: findAllMovementsByAccountId
+      parameters:
+        - name: x-sw-client-request-id
+          in: header
+          description: Unique ID for the request
+          required: true
+          schema:
+            type: string
+        - name: x-sw-client-user-agent
+          in: header
+          description: Type of device that consume Endpoint
+          required: true
+          schema:
+            type: string
+        - name: accountId
+          in: query
+          description: Account number
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: The account has registering movements
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movements'
+              example:
+                - id: 1
+                  typeMovement: DEPOSIT
+                  ammount: 5.02
+                - id: 2
+                  typeMovement: WITHDRAWAL
+                  ammount: 2
+                - id: 3
+                  typeMovement: DEPOSIT
+                  ammount: 6.89
+        '204':
+          description: The account has no registered movements
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movements'
+              example: []
+        '400':
+          description: Account ID must be an integer value service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                title: 'Error find movements'
+                detail: 'Some fields are incorrect'
+                errors:
+                  - message: 'The account ID is incorrect format'
+                status: 400
+components:
+  schemas:
+    Movement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        typeMovement:
+          type: string
+          enum:
+            - DEPOSIT
+            - WITHDRAWAL
+        ammount:
+          type: number
+          format: double
+          minimum: 0.01
+        accountId:
+          type: integer
+          format: int64
+      required:
+        - typeMovement
+        - ammount
+        - accountId
+    AccountMovement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        typeMovement:
+          type: string
+          enum:
+            - DEPOSIT
+            - WITHDRAWAL
+        ammount:
+          type: number
+          format: double
+          minimum: 0.01
+      required:
+        - typeMovement
+        - ammount
+        - accountId
+    Movements:
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountMovement'
+    Error:
+      type: object
+      properties:
+        title:
+          type: string
+        detail:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        status:
+          type: integer
+    ErrorDetail:
+      type: object
+      properties:
+        message:
+          type: string
