@@ -1,5 +1,6 @@
-package com.msa.service.movements.infrastructure.adapter.out.entity;
+package com.msa.service.movements.infrastructure.entity;
 
+import com.msa.service.movements.model.Movement;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,7 +13,11 @@ public class MovementEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String typeMovement;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_movement", nullable = false)
+    private Movement.TypeMovementEnum typeMovement;
+
     private BigDecimal amount;
     private Integer accountId;
 }

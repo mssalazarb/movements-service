@@ -57,7 +57,7 @@ paths:
               $ref: '#/components/schemas/Movement'
             example:
               typeMovement: DEPOSIT
-              ammount: 1.40
+              amount: 1.40
               accountId: 4565463
       responses:
         '201':
@@ -69,7 +69,7 @@ paths:
               example:
                 id: 1
                 typeMovement: DEPOSIT
-                ammount: 1.40
+                amount: 1.40
         '400':
           description: There is an error with the parameters sent to create the movement
           content:
@@ -131,13 +131,13 @@ paths:
               example:
                 - id: 1
                   typeMovement: DEPOSIT
-                  ammount: 5.02
+                  amount: 5.02
                 - id: 2
                   typeMovement: WITHDRAWAL
-                  ammount: 2
+                  amount: 2
                 - id: 3
                   typeMovement: DEPOSIT
-                  ammount: 6.89
+                  amount: 6.89
         '204':
           description: The account has no registered movements
           content:
@@ -170,7 +170,7 @@ components:
           enum:
             - DEPOSIT
             - WITHDRAWAL
-        ammount:
+        amount:
           type: number
           format: double
           minimum: 0.01
@@ -179,7 +179,7 @@ components:
           format: int64
       required:
         - typeMovement
-        - ammount
+        - amount
         - accountId
     AccountMovement:
       type: object
@@ -192,13 +192,13 @@ components:
           enum:
             - DEPOSIT
             - WITHDRAWAL
-        ammount:
+        amount:
           type: number
           format: double
           minimum: 0.01
       required:
         - typeMovement
-        - ammount
+        - amount
         - accountId
     Movements:
       type: array

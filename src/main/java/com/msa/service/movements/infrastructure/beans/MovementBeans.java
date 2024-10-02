@@ -1,11 +1,11 @@
-package com.msa.service.movements.infrastructure.configuration.beans;
+package com.msa.service.movements.infrastructure.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msa.service.movements.application.MovementServiceImpl;
 import com.msa.service.movements.domain.ports.in.MovementService;
 import com.msa.service.movements.domain.ports.out.MovementRepository;
-import com.msa.service.movements.infrastructure.adapter.out.repository.JpaMovementRepository;
-import com.msa.service.movements.infrastructure.adapter.out.repository.impl.MovementRepositoryImpl;
+import com.msa.service.movements.infrastructure.repository.JpaMovementRepository;
+import com.msa.service.movements.infrastructure.repository.impl.MovementRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
-package com.msa.service.movements.infrastructure.adapter.out.repository;
+package com.msa.service.movements.infrastructure.repository;
 
-import com.msa.service.movements.infrastructure.adapter.out.entity.MovementEntity;
+import com.msa.service.movements.infrastructure.entity.MovementEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

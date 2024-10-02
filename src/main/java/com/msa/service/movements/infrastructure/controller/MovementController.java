@@ -1,4 +1,4 @@
-package com.msa.service.movements.infrastructure.adapter.in;
+package com.msa.service.movements.infrastructure.controller;
 
 import com.msa.service.movements.api.MovementsApi;
 import com.msa.service.movements.domain.ports.in.MovementService;
@@ -6,11 +6,9 @@ import com.msa.service.movements.model.AccountMovement;
 import com.msa.service.movements.model.Movement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/movements")
 @RequiredArgsConstructor
 public class MovementController implements MovementsApi {
 

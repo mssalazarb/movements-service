@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
+    private Long id;
     private String numberAccount;
     private String currencyType;
     private BigDecimal amount;
