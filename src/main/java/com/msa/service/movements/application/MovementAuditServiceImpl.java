@@ -3,8 +3,7 @@ package com.msa.service.movements.application;
 import com.msa.service.movements.domain.enums.MovementAuditType;
 import com.msa.service.movements.domain.model.MovementAudit;
 import com.msa.service.movements.domain.ports.in.MovementAuditService;
-import com.msa.service.movements.domain.ports.out.MovementAuditRepository;
-import com.msa.service.movements.model.AccountMovement;
+import com.msa.service.movements.domain.ports.out.repositories.MovementAuditRepository;
 import com.msa.service.movements.model.Movement;
 import lombok.RequiredArgsConstructor;
 

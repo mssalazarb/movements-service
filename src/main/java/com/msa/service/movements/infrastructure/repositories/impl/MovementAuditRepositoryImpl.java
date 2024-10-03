@@ -1,10 +1,10 @@
-package com.msa.service.movements.infrastructure.repository.impl;
+package com.msa.service.movements.infrastructure.repositories.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msa.service.movements.domain.model.MovementAudit;
-import com.msa.service.movements.domain.ports.out.MovementAuditRepository;
+import com.msa.service.movements.domain.ports.out.repositories.MovementAuditRepository;
 import com.msa.service.movements.infrastructure.entity.MovementAuditEntity;
-import com.msa.service.movements.infrastructure.repository.JpaMovementAuditRepository;
+import com.msa.service.movements.infrastructure.repositories.JpaMovementAuditRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -2,7 +2,8 @@ package com.msa.service.movements.application;
 
 import com.msa.service.movements.domain.model.Account;
 import com.msa.service.movements.domain.ports.in.MovementService;
-import com.msa.service.movements.domain.ports.out.MovementRepository;
+import com.msa.service.movements.domain.ports.out.repositories.MovementRepository;
+import com.msa.service.movements.domain.ports.out.services.AccountService;
 import com.msa.service.movements.model.AccountMovement;
 import com.msa.service.movements.model.Movement;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +15,12 @@ import java.math.BigDecimal;
 public class MovementServiceImpl implements MovementService {
 
     private final MovementRepository movementRepository;
+    private final AccountService accountService;
 
     @Override
     @Transactional
     public AccountMovement createMovement(Movement movement) {
-        //TODO validate account by accountID
-        Account account = new Account();
+        Account account = this.accountService.findAccountByAccountId(movement.getAccountId());
         account.setAmount( BigDecimal.ZERO);
 
         AccountMovement accountMovement = new AccountMovement();

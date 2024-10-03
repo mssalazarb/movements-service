@@ -1,4 +1,4 @@
-package com.msa.service.movements.infrastructure.repository;
+package com.msa.service.movements.infrastructure.repositories;
 
 import com.msa.service.movements.infrastructure.entity.MovementEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

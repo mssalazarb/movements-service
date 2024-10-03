@@ -1,9 +1,9 @@
-package com.msa.service.movements.infrastructure.repository.impl;
+package com.msa.service.movements.infrastructure.repositories.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.msa.service.movements.domain.ports.out.MovementRepository;
+import com.msa.service.movements.domain.ports.out.repositories.MovementRepository;
 import com.msa.service.movements.infrastructure.entity.MovementEntity;
-import com.msa.service.movements.infrastructure.repository.JpaMovementRepository;
+import com.msa.service.movements.infrastructure.repositories.JpaMovementRepository;
 import com.msa.service.movements.model.Movement;
 import lombok.RequiredArgsConstructor;
 
