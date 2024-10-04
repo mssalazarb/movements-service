@@ -1,0 +1,51 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Build application
+        run: docker build -t movements-service .
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Executing test
+        run: docker-compose run --rm test
+
+      - name: Stop services
+        run: docker-compose down -v
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report-movements-service
+          path: ./reports
+
+  docker-push:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build application
+        run: docker build -t movements-service .
+
+      - name: Docker tag
+        run: docker tag latest
+
+      - name: Docker push
+        run: docker push mssalazarb/movements-service:latest
