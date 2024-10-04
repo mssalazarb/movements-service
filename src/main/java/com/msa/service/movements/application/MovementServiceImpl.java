@@ -10,9 +10,9 @@ import com.msa.service.movements.model.AccountMovement;
 import com.msa.service.movements.model.Movement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -51,12 +51,20 @@ public class MovementServiceImpl implements MovementService {
     }
 
     private BigDecimal processWithdrawal(BigDecimal totalAmount, Double amount) {
-        if (totalAmount.compareTo(BigDecimal.valueOf(amount)) > 0) {
+        if (totalAmount.compareTo(BigDecimal.valueOf(amount)) < 0) {
             log.error("The amount to be withdrawn exceeds the available value");
 
             throw new ConflictException("The amount to be withdrawn exceeds the available value");
         }
 
         return totalAmount.subtract(BigDecimal.valueOf(amount));
+    }
+
+    @Override
+    public List<AccountMovement> findAllMovementsByAccountId(Long accountId) {
+        return this.movementRepository.findAllMovementsByAccountId(accountId)
+                .stream()
+                .map(movement -> mapper.convertValue(movement, AccountMovement.class))
+                .toList();
     }
 }

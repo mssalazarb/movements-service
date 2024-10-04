@@ -19,5 +19,5 @@ public class MovementEntity {
     private Movement.TypeMovementEnum typeMovement;
 
     private BigDecimal amount;
-    private Integer accountId;
+    private Long accountId;
 }
