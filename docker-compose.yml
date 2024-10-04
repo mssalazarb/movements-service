@@ -24,7 +24,7 @@ services:
       test
   db:
     image: postgres:latest
-    container_name: postgres_test
+    container_name: movements_service_db
     environment:
       POSTGRES_DB: movements_service
       POSTGRES_USER: movements_service
