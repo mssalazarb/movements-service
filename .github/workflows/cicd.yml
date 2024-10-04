@@ -51,12 +51,14 @@ jobs:
         run: docker build -t movements-service:latest .
 
       - name: Docker Login
+        shell: bash
         env:
           USERNAME: ${{ secrets.DOCKER_USERNAME }}
           TOKEN: ${{ secrets.DOCKER_TOKEN }}
         run: echo "$USERNAME" && echo "$env:USERNAME"
 
       - name: Docker Login
+        shell: bash
         env:
           USERNAME: ${{ secrets.DOCKER_USERNAME }}
           TOKEN: ${{ secrets.DOCKER_TOKEN }}
