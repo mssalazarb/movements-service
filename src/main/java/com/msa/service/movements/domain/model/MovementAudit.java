@@ -19,6 +19,7 @@ public class MovementAudit implements Serializable {
     private BigDecimal amount;
     private Long accountId;
     private MovementAuditType status;
+    private String detail;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

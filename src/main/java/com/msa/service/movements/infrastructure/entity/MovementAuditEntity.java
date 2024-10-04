@@ -27,6 +27,8 @@ public class MovementAuditEntity {
     @Column(name = "status", nullable = false)
     private MovementAuditType status;
 
+    private String detail;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

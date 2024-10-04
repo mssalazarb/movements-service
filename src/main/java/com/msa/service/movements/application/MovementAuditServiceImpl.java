@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class MovementAuditServiceImpl implements MovementAuditService {
@@ -22,6 +23,7 @@ public class MovementAuditServiceImpl implements MovementAuditService {
         movementAudit.setAmount(BigDecimal.valueOf(movement.getAmount()));
         movementAudit.setAccountId(movement.getAccountId());
         movementAudit.setStatus(MovementAuditType.CREATED);
+        movementAudit.setDetail("");
         movementAudit.setCreatedAt(LocalDateTime.now());
 
         return this.movementAuditRepository.saveMovementAudit(movementAudit);
@@ -29,11 +31,6 @@ public class MovementAuditServiceImpl implements MovementAuditService {
 
     @Override
     public MovementAudit updateMovementAudit(MovementAudit movementAudit) {
-        if (movementAudit.getId() == null) {
-            movementAudit.setStatus(MovementAuditType.REJECTED);
-        } else {
-            movementAudit.setStatus(MovementAuditType.PROCESSED);
-        }
         movementAudit.setUpdatedAt(LocalDateTime.now());
 
         return this.movementAuditRepository.saveMovementAudit(movementAudit);

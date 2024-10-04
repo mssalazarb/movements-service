@@ -23,7 +23,6 @@ public class MovementServiceImpl implements MovementService {
     private final ObjectMapper mapper;
 
     @Override
-    @Transactional
     public AccountMovement createMovement(Movement movement) {
         Account account;
 

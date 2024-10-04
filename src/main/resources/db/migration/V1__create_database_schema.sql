@@ -14,6 +14,7 @@ CREATE TABLE movements_audit
     amount        DECIMAL                 NOT NULL,
     account_id    INTEGER                 NOT NULL,
     status        VARCHAR(20) CHECK (status in ('CREATED', 'PROCESSED', 'REJECTED')) NOT NULL,
+    detail        VARCHAR,
     created_at    TIMESTAMP DEFAULT now() NOT NULL,
     updated_at    TIMESTAMP
 );

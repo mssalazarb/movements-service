@@ -1,5 +1,6 @@
 package com.msa.service.movements.infrastructure.aop;
 
+import com.msa.service.movements.domain.enums.MovementAuditType;
 import com.msa.service.movements.domain.model.MovementAudit;
 import com.msa.service.movements.domain.ports.in.MovementAuditService;
 import com.msa.service.movements.model.Movement;
@@ -30,6 +31,7 @@ public class MovementAuditAspect {
     @AfterReturning(pointcut = "execution(* com.msa.service.movements.domain.ports.in.MovementService.createMovement(..))")
     public void afterSaveMovement() {
         var audit = this.movementAuditLocal.get();
+        audit.setStatus(MovementAuditType.PROCESSED);
         this.movementAuditService.updateMovementAudit(audit);
         this.movementAuditLocal.remove();
     }
@@ -37,6 +39,8 @@ public class MovementAuditAspect {
     @AfterThrowing(pointcut = "execution(* com.msa.service.movements.domain.ports.in.MovementService.createMovement(..))", throwing = "ex")
     public void afterThrowingError(Throwable ex) {
         var audit = this.movementAuditLocal.get();
+        audit.setStatus(MovementAuditType.REJECTED);
+        audit.setDetail(ex.getMessage());
         this.movementAuditService.updateMovementAudit(audit);
         this.movementAuditLocal.remove();
     }
