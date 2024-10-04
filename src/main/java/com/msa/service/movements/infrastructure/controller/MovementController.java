@@ -18,6 +18,6 @@ public class MovementController implements MovementsApi {
     public ResponseEntity<AccountMovement> createMovement(String xSwClientRequestId, String xSwClientUserAgent, Movement movement) {
         AccountMovement accountMovement = this.movementService.createMovement(movement);
 
-        return ResponseEntity.status(200).body(accountMovement);
+        return ResponseEntity.status(201).body(accountMovement);
     }
 }

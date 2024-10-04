@@ -1,5 +1,6 @@
 package com.msa.service.movements.infrastructure.beans;
 
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -10,10 +11,9 @@ import java.time.Duration;
 @Configuration
 public class RestTemplateBean {
     @Bean
-    public RestTemplate restTemplate() {
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setConnectTimeout(Duration.ofSeconds(3));
+    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+        restTemplateBuilder.setConnectTimeout(Duration.ofSeconds(3));
 
-        return new RestTemplate();
+        return restTemplateBuilder.build();
     }
 }

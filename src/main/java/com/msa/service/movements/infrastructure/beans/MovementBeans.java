@@ -26,6 +26,6 @@ public class MovementBeans {
 
     @Bean
     public MovementService movementService() {
-        return new MovementServiceImpl(movementRepository(), accountService);
+        return new MovementServiceImpl(movementRepository(), accountService, mapper);
     }
 }

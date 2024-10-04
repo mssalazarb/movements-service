@@ -1,5 +1,7 @@
 package com.msa.service.movements.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.msa.service.movements.domain.exceptions.ConflictException;
 import com.msa.service.movements.domain.model.Account;
 import com.msa.service.movements.domain.ports.in.MovementService;
 import com.msa.service.movements.domain.ports.out.repositories.MovementRepository;
@@ -7,38 +9,42 @@ import com.msa.service.movements.domain.ports.out.services.AccountService;
 import com.msa.service.movements.model.AccountMovement;
 import com.msa.service.movements.model.Movement;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
+@Log4j2
 @RequiredArgsConstructor
 public class MovementServiceImpl implements MovementService {
 
     private final MovementRepository movementRepository;
     private final AccountService accountService;
+    private final ObjectMapper mapper;
 
     @Override
     @Transactional
     public AccountMovement createMovement(Movement movement) {
-        Account account = this.accountService.findAccountByAccountId(movement.getAccountId());
-        account.setAmount( BigDecimal.ZERO);
+        Account account;
 
-        AccountMovement accountMovement = new AccountMovement();
+        try {
+            account = this.accountService.findAccountByAccountId(movement.getAccountId());
+        } catch (Exception e) {
+            log.error("An error occurred while validating the account");
+
+            throw new ConflictException("An error occurred while recording the movement");
+        }
 
         if (movement.getTypeMovement().name().equals("DEPOSIT")) {
-            accountMovement.setTypeMovement(AccountMovement.TypeMovementEnum.DEPOSIT);
             account.setAmount(this.processDeposit(account.getAmount(), movement.getAmount()));
         } else if (movement.getTypeMovement().name().equals("WITHDRAWAL")) {
-            accountMovement.setTypeMovement(AccountMovement.TypeMovementEnum.WITHDRAWAL);
             account.setAmount(this.processWithdrawal(account.getAmount(), movement.getAmount()));
         }
         //TODO save new account amount
 
         movement = this.movementRepository.saveMovement(movement);
-        accountMovement.setAmount(movement.getAmount());
-        accountMovement.setId(movement.getId());
 
-        return accountMovement;
+        return mapper.convertValue(movement, AccountMovement.class);
     }
 
     private BigDecimal processDeposit(BigDecimal totalAmount, Double amount) {
@@ -46,6 +52,12 @@ public class MovementServiceImpl implements MovementService {
     }
 
     private BigDecimal processWithdrawal(BigDecimal totalAmount, Double amount) {
+        if (totalAmount.compareTo(BigDecimal.valueOf(amount)) > 0) {
+            log.error("The amount to be withdrawn exceeds the available value");
+
+            throw new ConflictException("The amount to be withdrawn exceeds the available value");
+        }
+
         return totalAmount.subtract(BigDecimal.valueOf(amount));
     }
 }

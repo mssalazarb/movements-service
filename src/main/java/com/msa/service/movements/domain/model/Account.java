@@ -13,5 +13,5 @@ public class Account implements Serializable {
     private String numberAccount;
     private String currencyType;
     private BigDecimal amount;
-    private Integer customerId;
+    private Long customerId;
 }

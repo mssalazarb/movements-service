@@ -4,4 +4,6 @@ import com.msa.service.movements.domain.model.Account;
 
 public interface AccountService {
     Account findAccountByAccountId(Long accountId);
+
+    void updateAccountAmount(Account account);
 }

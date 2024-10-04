@@ -13,8 +13,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account findAccountByAccountId(Long accountId) {
-        String url = String.format("%s/api/account-service/accounts/%s", microserviceUrl, accountId);
+        String url = String.format("%s/api/v1/accounts/%s", microserviceUrl, accountId);
 
         return restTemplate.getForObject(url, Account.class);
+    }
+
+    @Override
+    public void updateAccountAmount(Account account) {
+        String url = String.format("%s/api/v1/accounts/%s", microserviceUrl, account.getId());
+
+        restTemplate.put(url, account);
     }
 }
