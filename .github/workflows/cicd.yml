@@ -54,6 +54,12 @@ jobs:
         env:
           USERNAME: ${{ secrets.DOCKER_USERNAME }}
           TOKEN: ${{ secrets.DOCKER_TOKEN }}
+        run: echo "$USERNAME" && echo "$env:USERNAME"
+
+      - name: Docker Login
+        env:
+          USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          TOKEN: ${{ secrets.DOCKER_TOKEN }}
         run: docker login -u "$USERNAME" -p "$TOKEN"
 
       - name: Docker Tag
