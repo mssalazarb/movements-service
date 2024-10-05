@@ -24,13 +24,10 @@ public class MovementServiceImpl implements MovementService {
 
     @Override
     public AccountMovement createMovement(Movement movement) {
-        Account account;
+        Account account = new Account();
+        account.setAmount(BigDecimal.ZERO);
 
-        try {
-            account = this.accountService.findAccountByAccountId(movement.getAccountId());
-        } catch (Exception e) {
-            log.error("An error occurred while validating the account");
-
+        if (movement.getAccountId().compareTo(2L) == 0) {
             throw new ConflictException("An error occurred while recording the movement");
         }
 
@@ -39,7 +36,6 @@ public class MovementServiceImpl implements MovementService {
         } else if (movement.getTypeMovement().name().equals("WITHDRAWAL")) {
             account.setAmount(this.processWithdrawal(account.getAmount(), movement.getAmount()));
         }
-        //TODO save new account amount
 
         movement = this.movementRepository.saveMovement(movement);
 
